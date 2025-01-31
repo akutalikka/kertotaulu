@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multiplication Practice</title>
+    <style>
+        .correct { color: green; }
+        .incorrect { color: red; }
+    </style>
+</head>
+<body>
+    <h1>Multiplication Practice</h1>
+    <div id="questions"></div>
+    <button onclick="checkAnswers()">Check Answers</button>
+    <div id="results"></div>
+    <button id="newRound" style="display:none;" onclick="generateQuestions()">New Round</button>
+
+    <script>
+        function getRandomInt(max) {
+            return Math.floor(Math.random() * max);
+        }
+
+        function generateQuestions() {
+            const questionsDiv = document.getElementById('questions');
+            questionsDiv.innerHTML = '';
+            for (let i = 0; i < 50; i++) {
+                const a = getRandomInt(11);
+                const b = getRandomInt(11);
+                const question = document.createElement('div');
+                question.innerHTML = `${a} x ${b} = <input type="number" id="answer${i}" data-correct="${a * b}">`;
+                questionsDiv.appendChild(question);
+            }
+            document.getElementById('results').innerHTML = '';
+            document.getElementById('newRound').style.display = 'none';
+        }
+
+        function checkAnswers() {
+            let correct = 0;
+            let incorrect = 0;
+            for (let i = 0; i < 50; i++) {
+                const input = document.getElementById(`answer${i}`);
+                const userAnswer = parseInt(input.value);
+                const correctAnswer = parseInt(input.getAttribute('data-correct'));
+                if (userAnswer === correctAnswer) {
+                    input.classList.add('correct');
+                    input.classList.remove('incorrect');
+                    correct++;
+                } else {
+                    input.classList.add('incorrect');
+                    input.classList.remove('correct');
+                    incorrect++;
+                }
+            }
+            document.getElementById('results').innerHTML = `Correct: ${correct}, Incorrect: ${incorrect}`;
+            document.getElementById('newRound').style.display = 'block';
+        }
+
+        // Generate initial set of questions
+        generateQuestions();
+    </script>
+</body>
+</html>
